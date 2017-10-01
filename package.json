@@ -1,0 +1,35 @@
+{
+  "name": "rent-car",
+  "version": "0.0.1",
+  "description": "System with the hability to manage rented cars",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test mocha -r ./test",
+    "dev": "NODE_ENV=development nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliveghost04/rent-car.git"
+  },
+  "keywords": [
+    "rent",
+    "car",
+    "system",
+    "manage",
+    "cars"
+  ],
+  "author": "Erick Jiménez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aliveghost04/rent-car/issues"
+  },
+  "homepage": "https://github.com/aliveghost04/rent-car#readme",
+  "dependencies": {
+    "express": "^4.16.1",
+    "feathers": "^2.2.2",
+    "mongoose": "^4.11.14"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
