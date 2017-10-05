@@ -4,8 +4,8 @@
   "description": "System with the hability to manage rented cars",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha -r ./test",
-    "dev": "NODE_ENV=development nodemon index.js"
+    "test": "DB_NAME=rent-car-test NODE_ENV=test mocha -r ./test",
+    "dev": "DB_NAME=rent-car-dev NODE_ENV=development nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -25,11 +25,14 @@
   },
   "homepage": "https://github.com/aliveghost04/rent-car#readme",
   "dependencies": {
-    "express": "^4.16.1",
+    "body-parser": "^1.18.2",
     "feathers": "^2.2.2",
+    "feathers-mongoose": "^5.1.2",
+    "feathers-rest": "^1.8.0",
     "mongoose": "^4.11.14"
   },
   "devDependencies": {
+    "mocha": "^4.0.0",
     "nodemon": "^1.12.1"
   }
 }

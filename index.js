@@ -1,9 +1,17 @@
 'use strict';
 
-let express = require('express');
-let app = express();
+const bodyParser = require('body-parser');
+const rest = require('feathers-rest');
+let feathers = require('feathers');
+let app = feathers();
 const errorHandler = require('./libs/error/error-handler');
 const fs = require('fs');
+let models = require('mongoose');
+models.Promise = global.Promise;
+
+app
+	.configure(rest())
+	.use(bodyParser.json());
 
 // Load configuration
 let config;
@@ -19,27 +27,50 @@ try {
 		process.exit();
 	}
 }
+app.set('config', config);
 // End configuration
 
-// Load controllers
-fs.readdirSync('./controllers').forEach(file => {
-	let match = /(.*?)\.js$/.exec(file);
-	if (match) {
-		let filename = match[1];
-		let router = require(`./controllers/${filename}`)(`/${filename}`, app);
-		app.use(config.defaultRoute, router);
-	} else {
-		console.warn(`** Please remove "${file}" file from controllers folder **`);
+// Make connection to database
+models.connect(config.database.url, {
+	useMongoClient: true
+}).then(() => {
+
+	// Load models
+	fs.readdirSync('./models').forEach(file => {
+		let match = /^(?!\.)(.*?)\.js$/.exec(file);
+		if (match) {
+			require(`./models/${file}`)(models);
+		} else {
+			if (file.indexOf('.') !== 0) {
+				console.warn(`** Please remove "${file}" file from models folder **`);
+			}
+		}
+	});
+
+	// Load controllers
+	fs.readdirSync('./controllers').forEach(file => {
+		let match = /^(?!\.)(.*?)\.js$/.exec(file);
+		if (match) {
+			let filename = match[1];
+			require(`./controllers/${filename}`)(`${config.defaultRoute}/${filename}`, app, models);
+		} else {
+			if (file.indexOf('.') !== 0) {
+				console.warn(`** Please remove "${file}" file from controllers folder **`);
+			}
+		}
+	});
+
+	// Serve statics just in development
+	if (app.get('env') !== 'production') {
+		app.use('/', feathers.static('public'));
 	}
-});
 
-// Serve statics just in development
-if (app.get('env') !== 'production') {
-	app.use('/', express.static('public'));
-}
+	errorHandler(app);
 
-errorHandler(app);
-
-app.listen(config.port, config.hostname, () => {
-	console.log(`Express listening on ${config.hostname}:${config.port} at ${Date()}`);
+	app.listen(config.port, config.hostname, () => {
+		console.log(`Feathers listening on ${config.hostname}:${config.port} at ${Date()}`);
+	});
+}).catch(err => {
+	console.error(`Cannot connect to database: ${config.database.url}`, err);
+	process.exit();
 });
