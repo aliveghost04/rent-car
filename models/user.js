@@ -1,5 +1,6 @@
 'use strict';
 const modelName = 'User';
+const userError = require('../libs/error')('user');
 
 module.exports = models => {
 
@@ -11,6 +12,14 @@ module.exports = models => {
 			required: true
 		},
 		cedula: {
+			type: String,
+			required: true
+		},
+		email: {
+			type: String,
+			required: true
+		},
+		password: {
 			type: String,
 			required: true
 		},
@@ -54,6 +63,35 @@ module.exports = models => {
 			}
 		}
 	});
+
+	UserSchema.statics.login = function(cedula, password) {
+		return this.findOne({
+			$or: [{
+				cedula,
+			}, {
+				email: cedula
+			}]
+		}).exec().then(user => {
+			if (user) {
+				const hashedPass = user.hashPassword(password);
+				if (hashedPass === user.password) {
+					return user;
+				} else {
+					return Promise.reject(new userError('NOT_FOUND'));
+				}
+			} else {
+				return Promise.reject(new userError('NOT_FOUND'));
+			}
+		});
+	};
+
+	UserSchema.methods.hashPassword = function(password) {
+		return require('crypto')
+			.createHash('sha512')
+			.update(this._id.toString())
+			.update(password)
+			.digest('hex');
+	};
 
 	return models.model(modelName, UserSchema);
 };

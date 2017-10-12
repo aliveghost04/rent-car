@@ -50,6 +50,7 @@ module.exports = models => {
 			type: Number,
 			required: true
 		},
+		images: [],
 		status: {
 			type: String,
 			enum: ['rented', 'active', 'inactive', 'checking'],

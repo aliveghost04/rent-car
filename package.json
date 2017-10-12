@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "DB_NAME=rent-car-test NODE_ENV=test mocha -r ./test",
-    "dev": "DB_NAME=rent-car-dev NODE_ENV=development nodemon index.js"
+    "dev": "DB_NAME=rent-car-dev NODE_ENV=development nodemon index.js",
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -29,10 +31,14 @@
     "feathers": "^2.2.2",
     "feathers-mongoose": "^5.1.2",
     "feathers-rest": "^1.8.0",
+    "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.11.14"
   },
   "devDependencies": {
+    "cors": "^2.8.4",
     "mocha": "^4.0.0",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "vue": "^2.4.4",
+    "webpack": "^3.6.0"
   }
 }

@@ -34,6 +34,11 @@ app.set('config', config);
 models.connect(config.database.url, {
 	useMongoClient: true
 }).then(() => {
+	// Serve statics just in development
+	if (app.get('env') !== 'production') {
+		app.use(require('cors')('*'));
+		app.use('/', feathers.static('public'));
+	}
 
 	// Load models
 	fs.readdirSync('./models').forEach(file => {
@@ -59,11 +64,6 @@ models.connect(config.database.url, {
 			}
 		}
 	});
-
-	// Serve statics just in development
-	if (app.get('env') !== 'production') {
-		app.use('/', feathers.static('public'));
-	}
 
 	errorHandler(app);
 
