@@ -14,11 +14,26 @@
 <script>
 export default {
   name: 'Login',
+  data: function () {
+  	return {
+  		user: {}
+  	}
+  },
   methods: {
   	submit: function (event) {
   		axios.post('/login', {
   			email: this.user.email,
   			password: this.user.password
+  		}).then(res => {
+        localStorage.setItem('token', res.data.token);
+  			localStorage.setItem('user', JSON.stringify(res.data.user));
+  			
+        this.$router.replace({
+          name: 'home'
+        });
+  		}).catch(err => {
+  			console.log('here', err);
+        alert(err.response.data.message);
   		});
   	}
   }

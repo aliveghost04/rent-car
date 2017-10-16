@@ -24,10 +24,14 @@ export default {
   		axios.post('/login', {
   			email: this.user.email,
   			password: this.user.password
-  		}).then(function(res) {
-  			localStorage.setItem('token', res.data.token);
-  			this.state.authorized = true;
-  		}).catch(function(err) {
+  		}).then(res => {
+        localStorage.setItem('token', res.data.token);
+  			localStorage.setItem('user', JSON.stringify(res.data.user));
+  			
+        this.$router.replace({
+          name: 'home'
+        });
+  		}).catch(err => {
   			alert(err.response.data.message);
   		});
   	}

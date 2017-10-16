@@ -9,11 +9,12 @@ module.exports = models => {
 			type: String,
 			required: true
 		},
-		status: {
-			type: String,
-			enum: ['active', 'inactive'],
+		active: {
+			type: Boolean,
 			required: true
 		}
+	}, {
+		timestamps: true
 	});
 
 	return models.model(modelName, VehicleBrandSchema); 

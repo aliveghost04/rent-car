@@ -23,9 +23,6 @@ axios.interceptors.request.use(function(config) {
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  state: {
-  	authorized: localStorage.getItem('token') !== null
-  },
   router,
   template: '<App/>',
   components: { App }

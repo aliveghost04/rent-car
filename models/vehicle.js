@@ -56,6 +56,8 @@ module.exports = models => {
 			enum: ['rented', 'active', 'inactive', 'checking'],
 			required: true
 		}
+	}, {
+		timestamps: true
 	});
 
 	return models.model(modelName, VehicleSchema); 

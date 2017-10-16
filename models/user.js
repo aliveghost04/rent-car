@@ -62,6 +62,8 @@ module.exports = models => {
 				}
 			}
 		}
+	}, {
+		timestamps: true
 	});
 
 	UserSchema.statics.login = function(cedula, password) {

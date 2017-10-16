@@ -11,13 +11,15 @@ module.exports = (route, app, models) => {
 			if (user) {
 				jwt.sign({
 					_id: user._id,
+					name: user.name,
 					level: user.level,
 					status: user.status
 				}, config.hash, function(err, token) {
 					if (err) return Promise.reject(err);
 					
 					res.json({
-						token
+						token,
+						user
 					});
 				});
 			}

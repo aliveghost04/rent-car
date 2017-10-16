@@ -48,6 +48,8 @@ module.exports = models => {
 			enum: ['active', 'completed', 'checking'],
 			required: true
 		}
+	}, {
+		timestamps: true
 	});
 
 	return models.model(modelName, RentSchema); 

@@ -54,6 +54,8 @@ module.exports = models => {
 			enum: ['complete'],
 			required: true
 		}
+	}, {
+		timestamps: true
 	});
 
 	return models.model(modelName, VehicleInspectionSchema); 
