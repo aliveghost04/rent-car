@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Master/>
 		<div class="row">
 	      <div class="col-md-3" v-for="vehicle in vehicles">
 	        <div class="thumbnail text-center">
@@ -29,11 +28,8 @@
 </template>
 
 <script type="text/javascript">
-	import Master from './Master.vue';
-
 	export default {
 		components: {
-			Master
 		},
 		data: function () {
 			return {

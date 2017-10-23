@@ -48,11 +48,6 @@ module.exports = models => {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 			required: true
-		},
-		status: {
-			type: String,
-			enum: ['complete'],
-			required: true
 		}
 	}, {
 		timestamps: true

@@ -10,9 +10,8 @@ module.exports = models => {
 			required: true,
 			unique: true
 		},
-		status: {
-			type: String,
-			enum: ['active', 'inactive'],
+		active: {
+			type: Boolean,
 			required: true
 		}
 	}, {

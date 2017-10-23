@@ -2,6 +2,7 @@
 
 const bodyParser = require('body-parser');
 const rest = require('feathers-rest');
+const hooks = require('feathers-hooks');
 let feathers = require('feathers');
 let app = feathers();
 const errorHandler = require('./libs/error/error-handler');
@@ -11,6 +12,7 @@ models.Promise = global.Promise;
 
 app
 	.configure(rest())
+	.configure(hooks())
 	.use(bodyParser.json());
 
 // Load configuration

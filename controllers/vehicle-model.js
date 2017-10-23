@@ -7,8 +7,20 @@ module.exports = (route, app, models) => {
 
 	app.use(route, service({
 		Model: VehicleModel,
-		pagination: {
+		paginate: {
 			max: 100
 		}
 	}));
+	
+	app.service(route).hooks({
+		before: {
+			find(hook) {
+				if (hook.params.query['brand']) {
+					hook.params.query['brand._id'] = models.Types.ObjectId(hook.params.query.brand);
+					delete hook.params.query.brand;
+				}
+				return Promise.resolve(hook);
+			}
+		}
+	});
 };

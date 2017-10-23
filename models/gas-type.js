@@ -11,11 +11,11 @@ module.exports = models => {
 		},
 		mesure: {
 			type: String,
+			enum: ['gls', 'm3s'],
 			required: true
 		},
-		status: {
-			type: String,
-			enum: ['active', 'inactive'],
+		active: {
+			type: Boolean,
 			required: true
 		}
 	}, {

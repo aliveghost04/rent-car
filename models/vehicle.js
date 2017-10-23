@@ -7,8 +7,7 @@ module.exports = models => {
 	let VehicleSchema = new Schema({
 		description: {
 			type: String,
-			required: true,
-			unique: true
+			required: true
 		},
 		chasisNumber: {
 			type: String,

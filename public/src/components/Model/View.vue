@@ -22,7 +22,6 @@
 export default {
   name: 'Brand',
   data: function() {
-  	console.log('here');
   	return {
   		brand: {}
   	};
