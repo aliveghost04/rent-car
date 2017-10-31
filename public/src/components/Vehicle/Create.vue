@@ -103,7 +103,9 @@ export default {
       brands: [],
       models: [],
       gasTypes: [],
-      types: []
+      types: [],
+      years: [],
+      wheels: []
   	};
   },
   mounted: function () {

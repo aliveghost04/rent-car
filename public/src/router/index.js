@@ -7,6 +7,7 @@ import Model from '@/components/Model'
 import Vehicle from '@/components/Vehicle'
 import GasType from '@/components/GasType'
 import Type from '@/components/Type'
+import Customer from '@/components/Customer'
 
 Vue.use(Router)
 
@@ -24,7 +25,8 @@ let routes = {
     Vehicle, 
     Model,
     GasType,
-    Type
+    Type,
+    Customer
   ]
 };
 console.log(routes);

@@ -42,9 +42,8 @@ module.exports = models => {
 			required: true,
 			enum: ['person', 'entity']
 		},
-		status: {
-			type: String,
-			enum: ['active', 'inactive'],
+		active: {
+			type: Boolean,
 			required: true
 		}
 	}, {

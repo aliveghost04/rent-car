@@ -94,6 +94,19 @@
 		              </router-link>
 		            </ul>
 		          </li>
+		          <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		              Clientes <span class="caret"></span>
+		            </a>
+		            <ul class="dropdown-menu">
+		              <router-link tag="li" :to="{ name: 'customer-create' }">
+		                <a>Agregar</a>
+		              </router-link>
+		              <router-link tag="li" :to="{ name: 'customer-list' }">
+		                <a>Listado</a>
+		              </router-link>
+		            </ul>
+		          </li>
 		        </ul>
 		        <form class="navbar-form navbar-left">
 		          <div class="form-group">
@@ -126,7 +139,9 @@
 		    </div><!-- /.container-fluid -->
 		  </nav>
 	  </header>
-	  <router-view/>
+	  <div class="container-fluid">
+		  <router-view/>
+	  </div>
 	  <footer v-if="$authorized()"></footer>
   </div>
 </template>

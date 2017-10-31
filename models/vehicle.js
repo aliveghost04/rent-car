@@ -49,7 +49,17 @@ module.exports = models => {
 			type: Number,
 			required: true
 		},
-		images: [],
+		images: [{
+			path: {
+				type: String,
+				required: true
+			},
+			remote: {
+				type: Boolean,
+				required: true,
+				default: false
+			}
+		}],
 		status: {
 			type: String,
 			enum: ['rented', 'active', 'inactive', 'checking'],

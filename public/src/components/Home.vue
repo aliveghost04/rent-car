@@ -13,7 +13,7 @@
 	            <p>Año: {{ vehicle.manufactureYear }}</p>
 	            <p>
 	              <router-link 
-	                :to="{ name: 'vehicle', params: { id: vehicle._id }}" 
+	                :to="{ name: 'vehicle-view', params: { id: vehicle._id }}" 
 	                class="btn btn-default">
 	                  Detalles
 	              </router-link>
@@ -29,8 +29,6 @@
 
 <script type="text/javascript">
 	export default {
-		components: {
-		},
 		data: function () {
 			return {
 				vehicles: []
