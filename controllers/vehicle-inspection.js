@@ -11,4 +11,13 @@ module.exports = (route, app, models) => {
 			max: 100
 		}
 	}));
+
+	app.service(route).hooks({
+		before: {
+			create: function(hook) {
+				const user = hook.app.get('user')
+				hook.data.inspectionEmployee = user._id;
+			}
+		}
+	});
 };

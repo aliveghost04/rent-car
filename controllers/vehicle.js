@@ -1,6 +1,7 @@
 'use strict';
 const feathers = require('feathers');
 const service = require('feathers-mongoose');
+const vehicleError = require('../libs/error')('vehicle');
 
 module.exports = (route, app, models) => {
 	const Vehicle = models.model('Vehicle');

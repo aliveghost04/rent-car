@@ -42,6 +42,7 @@ module.exports = models => {
 		},
 		inspectedAt: {
 			type: Date,
+			default: Date.now,
 			required: true
 		},
 		inspectionEmployee: {

@@ -107,6 +107,19 @@
 		              </router-link>
 		            </ul>
 		          </li>
+		          <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		              Empleados <span class="caret"></span>
+		            </a>
+		            <ul class="dropdown-menu">
+		              <router-link tag="li" :to="{ name: 'employee-create' }">
+		                <a>Agregar</a>
+		              </router-link>
+		              <router-link tag="li" :to="{ name: 'employee-list' }">
+		                <a>Listado</a>
+		              </router-link>
+		            </ul>
+		          </li>
 		        </ul>
 		        <form class="navbar-form navbar-left">
 		          <div class="form-group">

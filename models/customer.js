@@ -13,6 +13,7 @@ module.exports = models => {
 			type: String,
 			required: true
 		},
+		email: String,
 		creditCard: {
 			number: {
 				type: String,

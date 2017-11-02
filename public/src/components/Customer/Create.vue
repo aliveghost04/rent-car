@@ -11,6 +11,10 @@
         <input type="text" class="form-control" v-model="customer.cedula">
       </div>
       <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" v-model="customer.email">
+      </div>
+      <div class="form-group">
         <label>Tarjeta de crédito</label>
         <input type="number" class="form-control" v-model="customer.creditCard.number">
         <label>CVV</label>

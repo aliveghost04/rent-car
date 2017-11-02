@@ -1,5 +1,7 @@
 'use strict';
 const modelName = 'Rent';
+const rentError = require('../libs/error')('rent');
+const moment = require('moment');
 
 module.exports = models => {
 	const Schema = models.Schema;
@@ -22,6 +24,7 @@ module.exports = models => {
 		},
 		rentDate: {
 			type: Date,
+			default: Date.now,
 			required: true
 		},
 		returnDate: {
@@ -50,6 +53,24 @@ module.exports = models => {
 		}
 	}, {
 		timestamps: true
+	});
+
+	RentSchema.pre('validate', function (next) {
+		if (this.isNew) {
+			this.rentDate = moment({
+				hour: 0, 
+				minutes: 0, 
+				seconds: 0, 
+				millisecond: 0
+			}).toDate();
+			this.daysQuantity = moment(this.rentDate).diff(this.returnDate, 'days');
+		}
+
+		if (moment(this.rentDate).isAfter(this.returnDate)) {
+			next(new rentError('invalid_return_date'));
+		} else {
+			next();
+		}
 	});
 
 	return models.model(modelName, RentSchema); 

@@ -8,6 +8,9 @@ import Vehicle from '@/components/Vehicle'
 import GasType from '@/components/GasType'
 import Type from '@/components/Type'
 import Customer from '@/components/Customer'
+import Employee from '@/components/Employee'
+import Inspect from '@/components/Inspect'
+import Rent from '@/components/Rent'
 
 Vue.use(Router)
 
@@ -26,12 +29,14 @@ let routes = {
     Model,
     GasType,
     Type,
-    Customer
+    Customer,
+    Employee,
+    Inspect,
+    Rent
   ]
 };
-console.log(routes);
-let router = new Router(routes);
 
+let router = new Router(routes);
 
 router.beforeEach((to, from, next) => {
   if (to.name === 'login') {

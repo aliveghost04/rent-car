@@ -16,5 +16,9 @@ module.exports = {
 	INVALID_GAS_TYPE: {
 		message: 'Tipo de compustible inválido',
 		status: 400
+	},
+	NOT_FOUND: {
+		message: 'El vehículo especificado no pudo ser encontrado',
+		status: 404
 	}
 };

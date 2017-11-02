@@ -6,14 +6,10 @@ const hooks = require('feathers-hooks');
 let feathers = require('feathers');
 let app = feathers();
 const errorHandler = require('./libs/error/error-handler');
+const authenticate = require('./libs/middlewares/authenticate');
 const fs = require('fs');
 let models = require('mongoose');
 models.Promise = global.Promise;
-
-app
-	.configure(rest())
-	.configure(hooks())
-	.use(bodyParser.json());
 
 // Load configuration
 let config;
@@ -31,6 +27,12 @@ try {
 }
 app.set('config', config);
 // End configuration
+
+app
+	.configure(authenticate.parseAuthentication)
+	.configure(rest())
+	.configure(hooks())
+	.use(bodyParser.json());
 
 // Make connection to database
 models.connect(config.database.url, {

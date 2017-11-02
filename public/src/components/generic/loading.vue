@@ -22,6 +22,7 @@
 		border-top-color: orange;
 		border-radius: 50%;
 		animation: spin 2s linear infinite;
+		z-index: 100;
 	}
 
 	@keyframes spin {
