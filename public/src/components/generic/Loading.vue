@@ -1,11 +1,11 @@
 <template>
-	<div class="loading"></div>
+	<div class="loading" v-if="isLoading"></div>
 </template>
 
 <script type="text/javascript">
 	export default {
-		data: function () {
-			return {}
+		props: {
+			isLoading: Boolean
 		}
 	}
 </script>
