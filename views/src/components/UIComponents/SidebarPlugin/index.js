@@ -19,25 +19,46 @@ const SidebarStore = {
       path: '/customer'
     },
     {
-      name: 'Typography',
-      icon: 'ti-text',
-      path: '/typography'
+      name: 'Empleados',
+      icon: 'ti-archive',
+      path: '/employee'
     },
     {
-      name: 'Icons',
-      icon: 'ti-pencil-alt2',
-      path: '/icons'
+      name: 'Marca de vehículos',
+      icon: 'ti-direction',
+      path: '/vehicle-brand'
     },
     {
-      name: 'Maps',
-      icon: 'ti-map',
-      path: '/maps'
+      name: 'Modelo de vehículos',
+      icon: 'ti-direction-alt',
+      path: '/vehicle-model'
     },
+    // {
+    //   name: 'Typography',
+    //   icon: 'ti-text',
+    //   path: '/typography'
+    // },
     {
-      name: 'Notifications',
-      icon: 'ti-bell',
-      path: '/notifications'
+      name: 'Tipos de combustible',
+      icon: 'ti-paint-bucket',
+      path: '/gas-type'
     }
+    // ,
+    // {
+    //   name: 'Icons',
+    //   icon: 'ti-pencil-alt2',
+    //   path: '/icons'
+    // },
+    // {
+    //   name: 'Maps',
+    //   icon: 'ti-map',
+    //   path: '/maps'
+    // },
+    // {
+    //   name: 'Notifications',
+    //   icon: 'ti-bell',
+    //   path: '/notifications'
+    // }
   ],
   displaySidebar (value) {
     this.showSidebar = value

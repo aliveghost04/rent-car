@@ -12,7 +12,7 @@
       </div>
       <div class="navbar-right-menu">
         <ul class="nav navbar-nav navbar-right">
-          <li class="open">
+          <!-- <li class="open">
             <a href="#" class="dropdown-toggle btn-magnify" data-toggle="dropdown">
               <i class="ti-panel"></i>
               <p>Stats</p>
@@ -24,12 +24,12 @@
                <li><a href="#">Notification 3</a></li>
                <li><a href="#">Notification 4</a></li>
                <li><a href="#">Another notification</a></li>
-             </drop-down>
+             </drop-down> -->
           <li>
             <a href="#" class="btn-rotate">
               <i class="ti-settings"></i>
-              <p>
-                Settings
+              <p @click="exit">
+                Cerrar sesión
               </p>
             </a>
           </li>
@@ -39,6 +39,9 @@
   </nav>
 </template>
 <script>
+  
+  import AuthenticationService from 'src/services/authentication'
+
   export default {
     computed: {
       routeName () {
@@ -66,6 +69,12 @@
       },
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
+      },
+      exit: function () {
+        AuthenticationService.logout()
+        this.$router.push({
+          name: 'login'
+        })
       }
     }
   }

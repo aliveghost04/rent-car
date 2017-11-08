@@ -1,10 +1,10 @@
 import http from './http'
 
-const path = '/customer'
-const customerTypes = {
-
-  person: 'Persona',
-  entity: 'Empresa'
+const path = '/user'
+const journeys = {
+  morning: 'Mañana',
+  evening: 'Tarde',
+  nocturnal: 'Noche'
 }
 
 export default {
@@ -17,7 +17,7 @@ export default {
         if (formated) {
           return res.data.map(el => {
             el.id = el._id
-            el.type = customerTypes[el.personType]
+            el.journeyText = journeys[el.journey]
             return el
           })
         } else {
@@ -31,9 +31,26 @@ export default {
       .then(res => res.data)
   },
   save: data => {
+    if (data.active) {
+      data.status = 'active'
+    } else {
+      data.status = 'inactive'
+    }
+    delete data.active
+
     return http
       .post(path, data)
       .then(res => res.data)
+      .catch(err => {
+        if (data.status === 'active') {
+          data.active = true
+        } else {
+          data.active = false
+        }
+        delete data.status
+
+        return Promise.reject(err)
+      })
   },
   update: data => {
     return http

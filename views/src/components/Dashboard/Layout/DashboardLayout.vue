@@ -1,7 +1,10 @@
 <template>
   <div class="wrapper">
-    <side-bar type="sidebar" :sidebar-links="$sidebar.sidebarLinks">
-
+    <side-bar 
+      type="sidebar" 
+      backgroundColor="white"
+      activeColor="info" 
+      :sidebar-links="$sidebar.sidebarLinks">
     </side-bar>
     <notifications>
 

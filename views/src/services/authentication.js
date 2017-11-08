@@ -26,6 +26,10 @@ export default {
       return res.data
     })
   },
+  logout: () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  },
   isAuthenticated: () => getToken() && getUser(),
   getUser,
   getToken

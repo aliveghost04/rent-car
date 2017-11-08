@@ -20,8 +20,17 @@ import TableList from 'src/components/Dashboard/Views/TableList.vue'
 // Administratives pages
 import Vehicle from 'src/components/Dashboard/Views/Vehicle'
 import Customer from 'src/components/Dashboard/Views/Customer'
+import Employee from 'src/components/Dashboard/Views/Employee'
+import GasType from 'src/components/Dashboard/Views/GasType'
+import VehicleBrand from 'src/components/Dashboard/Views/VehicleBrand'
+import VehicleModel from 'src/components/Dashboard/Views/VehicleModel'
 
 const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
   {
     path: '/',
     component: DashboardLayout,
@@ -30,11 +39,6 @@ const routes = [
         path: '',
         name: 'home',
         component: Overview
-      },
-      {
-        path: 'login',
-        name: 'login',
-        component: Login
       },
       {
         path: 'stats',
@@ -67,7 +71,11 @@ const routes = [
         component: TableList
       },
       Vehicle,
-      Customer
+      Customer,
+      Employee,
+      GasType,
+      VehicleBrand,
+      VehicleModel
     ]
   },
   {
