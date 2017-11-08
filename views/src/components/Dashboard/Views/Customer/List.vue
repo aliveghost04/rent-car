@@ -4,7 +4,7 @@
     <div class="col-md-12">
       <div class="text-right add-button">
         <router-link 
-          :to="{ name: 'vehicle-add' }" 
+          :to="{ name: 'customer-add' }" 
           class="btn btn-primary">
 
           Agregar
@@ -13,42 +13,47 @@
       <div class="card">
         <div class="header">
           <slot name="header">
-            <h4 class="title">Listado de Vehículos</h4>
+            <h4 class="title">Listado de Clientes</h4>
           </slot>
         </div>
         <div class="content table-responsive table-full-width">
           <table class="table table-stripped">
             <thead>
-              <th>Imagen</th>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>Combustible</th>
+              <th>Nombre</th>
+              <th>Cédula</th>
+              <th>Límite de crédito</th>
               <th>Tipo</th>
               <th>Estado</th>
               <th>Acciones</th>
             </thead>
             <tbody>
-              <tr v-for="vehicle in vehicles" :key="vehicle.id">
+              <tr v-for="customer in customers" :key="customer.id">
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.cedula }}</td>
+                <td>{{ customer.creditLimit }}</td>
+                <td>{{ customer.type }}</td>
                 <td>
-                  <img :src="vehicle.image" :alt="`${vehicle.brand} ${vehicle.model}`">
+                  <i class="ti-check text-success" 
+                    v-if="customer.active"
+                    title="Activo">
+                  </i>
+                  <i class="ti-close text-warning" 
+                    v-if="!customer.active"
+                    title="Inactivo">
+                  </i>
                 </td>
-                <td>{{ vehicle.brand }}</td>
-                <td>{{ vehicle.model }}</td>
-                <td>{{ vehicle.gasType }}</td>
-                <td>{{ vehicle.type }}</td>
-                <td>{{ vehicle.status }}</td>
                 <td>
                   <router-link :to="{
-                    name: 'vehicle-edit',
+                    name: 'customer-edit',
                     params: {
-                      id: vehicle.id
+                      id: customer.id
                     }
                   }" class="btn btn-warning">
                     <i class="ti-pencil"></i>
                   </router-link>
                   <button type="button"
                     class="btn btn-danger" 
-                    @click.prevent="remove(vehicle.id)">
+                    @click.prevent="remove(customer.id)">
                     <i class="ti-trash"></i>
                   </button>
                 </td>
@@ -61,61 +66,59 @@
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
   import Loading from 'src/components/UIComponents/Loading'
-  import PaperTable from 'src/components/UIComponents/PaperTable'
-  import VehicleService from 'src/services/vehicles'
+  import CustomerService from 'src/services/customer'
 
   export default {
     components: {
-      Loading,
-      PaperTable
+      Loading
     },
     data: function () {
       return {
         loading: true,
-        vehicles: null
+        customers: []
       }
     },
-    mounted: function () {
-      VehicleService
-        .getAll({}, true)
-        .then(vehicles => {
-          this.vehicles = vehicles
-        })
-        .catch(console.error)
-        .then(() => {
-          this.loading = false
-        })
-    },
     methods: {
-      remove (id) {
+      remove: function (id) {
         this.$swal({
           title: 'Confirmar',
           icon: 'warning',
-          text: '¿Estás seguro que quieres eliminar este vehículo?',
+          text: '¿Estás seguro que quieres eliminar este cliente?',
           dangerMode: true,
           buttons: true
         }).then(deleteIt => {
           if (deleteIt) {
-            VehicleService
+            CustomerService
               .delete(id)
               .then(res => {
                 this.$notifications.notify({
-                  message: 'El vehículo ha sido eliminado exitosamente',
+                  message: 'El cliente ha sido eliminado exitosamente',
                   type: 'success',
                   icon: 'ti-check',
                   horizontalAlign: 'right',
                   verticalAlign: 'bottom'
                 })
 
-                this.vehicles = this
-                  .vehicles
-                  .filter(vehicle => vehicle.id !== id)
+                this.customers = this
+                  .customers
+                  .filter(customer => customer.id !== id)
               }).catch(console.error)
           }
         })
       }
+    },
+    mounted: function () {
+      CustomerService
+        .getAll({}, true)
+        .then(customers => {
+          this.customers = customers
+        })
+        .catch(console.error)
+        .then(() => {
+          this.loading = false
+        })
     }
   }
 </script>

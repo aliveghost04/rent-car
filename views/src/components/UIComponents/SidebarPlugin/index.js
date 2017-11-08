@@ -14,9 +14,9 @@ const SidebarStore = {
       path: '/vehicle'
     },
     {
-      name: 'Table List',
-      icon: 'ti-view-list-alt',
-      path: '/table-list'
+      name: 'Clientes',
+      icon: 'ti-user',
+      path: '/customer'
     },
     {
       name: 'Typography',

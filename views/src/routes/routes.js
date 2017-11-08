@@ -19,6 +19,7 @@ import TableList from 'src/components/Dashboard/Views/TableList.vue'
 
 // Administratives pages
 import Vehicle from 'src/components/Dashboard/Views/Vehicle'
+import Customer from 'src/components/Dashboard/Views/Customer'
 
 const routes = [
   {
@@ -65,10 +66,14 @@ const routes = [
         name: 'table-list',
         component: TableList
       },
-      Vehicle
+      Vehicle,
+      Customer
     ]
   },
-  { path: '*', component: NotFound }
+  {
+    path: '*',
+    component: NotFound
+  }
 ]
 
 /**

@@ -1,6 +1,7 @@
 'use strict'
 
 import http from './http'
+const path = '/vehicle'
 
 const vehicleStatus = {
   active: 'Activo',
@@ -12,7 +13,7 @@ const vehicleStatus = {
 export default {
   getAll: (params, formated) => {
     return http
-      .get('/vehicle', {
+      .get(path, {
         params
       })
       .then(res => {
@@ -35,7 +36,29 @@ export default {
   },
   delete: id => {
     return http
-      .delete(`/vehicle/${id}`)
+      .delete(`${path}/${id}`)
       .then(res => res.data)
+  },
+  save: data => {
+    if (data.active) {
+      data.status = 'active'
+    } else {
+      data.status = 'inactive'
+    }
+    delete data.active
+
+    return http
+      .post(path, data)
+      .then(res => res.data)
+      .catch(err => {
+        if (data.status === 'active') {
+          data.active = true
+        } else {
+          data.active = false
+        }
+        delete data.status
+
+        return Promise.reject(err)
+      })
   }
 }

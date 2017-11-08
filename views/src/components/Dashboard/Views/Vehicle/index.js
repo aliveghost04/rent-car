@@ -7,7 +7,7 @@ const routes = {
   component: Base,
   children: [{
     path: '',
-    name: 'vehicles-list',
+    name: 'vehicle-list',
     meta: {
       title: 'Vehículos'
     },
