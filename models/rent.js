@@ -8,18 +8,15 @@ module.exports = models => {
 
 	let RentSchema = new Schema({
 		employee: {
-			type: Schema.Types.ObjectId,
-			ref: 'User',
+			type: {},
 			required: true
 		},
 		vehicle: {
-			type: Schema.Types.ObjectId,
-			ref: 'Vehicle',
+			type: {},
 			required: true
 		},
 		customer: {
-			type: Schema.Types.ObjectId,
-			ref: 'Customer',
+			type: {},
 			required: true
 		},
 		rentDate: {
@@ -34,7 +31,7 @@ module.exports = models => {
 		returnedDate: {
 			type: Date,
 			required: function() {
-				return this.status !== 'active';
+				return this.status === 'completed';
 			}
 		},
 		costPerDay: {
@@ -44,6 +41,12 @@ module.exports = models => {
 		daysQuantity: {
 			type: Number,
 			required: true
+		},
+		daysQuantityTaken: {
+			type: Number,
+			required: function () {
+				return this.status === 'completed';
+			}
 		},
 		comment: String,
 		status: {
@@ -56,6 +59,8 @@ module.exports = models => {
 	});
 
 	RentSchema.pre('validate', function (next) {
+		let promise = Promise.resolve();
+
 		if (this.isNew) {
 			this.rentDate = moment({
 				hour: 0, 
@@ -64,13 +69,66 @@ module.exports = models => {
 				millisecond: 0
 			}).toDate();
 			this.daysQuantity = moment(this.rentDate).diff(this.returnDate, 'days');
+
+			// Populate fields
+			promise = Vehicle
+				.findById(this.vehicle)
+				.exec()
+				.then(vehicle => {
+					if (vehicle) {
+						this.vehicle = vehicle;
+						return User
+							.findById(this.employee)
+							.exec();
+					} else {
+						return Promise
+							.reject(new rentError('invalid_vehicle'));
+					}
+				})
+				.then(user => {
+					if (user) {
+						this.user = user;
+						return Customer
+							.findById(this.customer)
+							.exec()
+					} else {
+						return Promise
+							.reject(new rentError('invalid_user'));
+					}
+				})
+				.then(customer => {
+					if (customer) {
+						this.customer = customer;
+					} else {
+						return Promise
+							.reject(new rentError('invalid_customer'));
+					}
+				})
 		}
 
-		if (moment(this.rentDate).isAfter(this.returnDate)) {
-			next(new rentError('invalid_return_date'));
-		} else {
-			next();
-		}
+		promise
+			.then(() => {
+				if (moment(this.rentDate).isAfter(this.returnDate)) {
+					return Promise
+						.reject(new rentError('invalid_return_date'));
+				} else {
+					next();
+				}
+			})
+			.catch(next)
+	});
+
+	RentSchema.post('save', function (doc, next) {
+		const Vehicle = this.model('Vehicle');
+		const Customer = this.model('Customer');
+		const User = this.model('User');
+
+		Vehicle
+			.markAsRented(doc.vehicle)
+			.then(() => {
+				next();
+			})
+			.catch(next)
 	});
 
 	return models.model(modelName, RentSchema); 

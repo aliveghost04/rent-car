@@ -1,5 +1,6 @@
 'use strict';
 const modelName = 'Vehicle';
+const serverError = require('../libs/error')('server');
 
 module.exports = models => {
 	const Schema = models.Schema;
@@ -68,6 +69,20 @@ module.exports = models => {
 	}, {
 		timestamps: true
 	});
+
+	VehicleSchema.statics.markAsRented = function (_id) {
+		return this.update({
+			_id
+		}, {
+			status: 'rented'
+		}).then(res => {
+			if (res.ok) {
+				return Promise.resolve(true);
+			} else {
+				return Promise.reject(new serverError('error'));
+			}
+		})
+	};
 
 	return models.model(modelName, VehicleSchema); 
 };

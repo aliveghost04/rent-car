@@ -26,13 +26,21 @@ export default {
               gasType: vehicle.gasType.description || '',
               type: vehicle.vehicleType.description || '',
               image: vehicle.images.unshift(),
-              status: vehicleStatus[vehicle.status] || ''
+              statusText: vehicleStatus[vehicle.status] || '',
+              status: vehicle.status
             }
           })
         } else {
           return res.data
         }
       })
+  },
+  get: (id, params) => {
+    return http
+      .get(`${path}/${id}`, {
+        params: params
+      })
+      .then(res => res.data)
   },
   delete: id => {
     return http

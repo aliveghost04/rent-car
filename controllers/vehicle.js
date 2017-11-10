@@ -12,7 +12,7 @@ module.exports = (route, app, models) => {
 
 	app.use(route, service({
 		Model: Vehicle,
-		pagination: {
+		paginate: {
 			max: 100
 		}
 	}));

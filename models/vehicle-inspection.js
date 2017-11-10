@@ -45,6 +45,11 @@ module.exports = models => {
 			default: Date.now,
 			required: true
 		},
+		type: {
+			type: 'String',
+			enum: ['return', 'rent'],
+			required: true
+		},
 		inspectionEmployee: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',

@@ -7,7 +7,7 @@ module.exports = (route, app, models) => {
 
 	app.use(route, service({
 		Model: VehicleInspection,
-		pagination: {
+		paginate: {
 			max: 100
 		}
 	}));
@@ -16,6 +16,7 @@ module.exports = (route, app, models) => {
 		before: {
 			create: function(hook) {
 				const user = hook.app.get('user')
+				
 				hook.data.inspectionEmployee = user._id;
 			}
 		}

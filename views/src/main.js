@@ -13,6 +13,7 @@ import routes from './routes/routes'
 // library imports
 import Chartist from 'chartist'
 import swal from 'sweetalert/dist/sweetalert.min'
+import moment from 'moment'
 import 'bootstrap/dist/css/bootstrap.css'
 import './assets/sass/paper-dashboard.scss'
 import 'es6-promise/auto'
@@ -33,6 +34,12 @@ Object.defineProperty(Vue.prototype, '$Chartist', {
 Object.defineProperty(Vue.prototype, '$swal', {
   get () {
     return swal
+  }
+})
+
+Object.defineProperty(Vue.prototype, '$moment', {
+  get () {
+    return moment
   }
 })
 

@@ -9,6 +9,7 @@
         </fg-input>
         <fg-input type="number"
           v-model.number="employee.cedula"
+          maxlengh="11"
           label="Cédula"
           title="Cédula">
         </fg-input>

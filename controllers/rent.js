@@ -8,15 +8,38 @@ module.exports = (route, app, models) => {
 	const Rent = models.model('Rent');
 	const VehicleInspection = models.model('VehicleInspection');
 
+	app.get(`${route}/:id/calculate-days-delay`, (req, res, next) => {
+		Rent
+			.findById(req.params.id)
+			.exec()
+			.then(rent => {
+				const daysDelay = moment().diff(rent.returnDate, 'd');
+
+				res.json({
+					costPerDay: rent.costPerDay,
+					daysDelay,
+					daysDelayAmount: daysDelay > 0 ? daysDelay * rent.costPerDay : 0
+				});
+			})
+			.catch(next)
+	});
+
 	app.use(route, service({
 		Model: Rent,
-		pagination: {
+		paginate: {
 			max: 100
 		}
 	}));
 
 	app.service(route).hooks({
 		before: {
+			find: function (hook) {
+				hook.params.query.$sort = {
+					returnDate: 1
+				};
+
+				hook.params.query['status'] = 'active';
+			},
 			create: function (hook) {
 				if (!hook.data.inspection) {
 					return Promise.reject(new rentError('no_inspection'));
@@ -39,6 +62,15 @@ module.exports = (route, app, models) => {
 
 					return hook;
 				});
+			},
+			remove: function (hook) {
+				return Promise.reject(new rentError('method_not_allowed'));
+			},
+			patch: function (hook) {
+				return Promise.reject(new rentError('method_not_allowed'));
+			},
+			update: function (hook) {
+				return Promise.reject(new rentError('method_not_allowed'));
 			}
 		}
 	});

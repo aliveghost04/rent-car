@@ -33,6 +33,16 @@ const SidebarStore = {
       icon: 'ti-direction-alt',
       path: '/vehicle-model'
     },
+    {
+      name: 'Rentas',
+      icon: 'ti-money',
+      path: '/rent'
+    },
+    {
+      name: 'Inspección',
+      icon: 'ti-eye',
+      path: '/inspection'
+    },
     // {
     //   name: 'Typography',
     //   icon: 'ti-text',

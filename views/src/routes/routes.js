@@ -24,6 +24,8 @@ import Employee from 'src/components/Dashboard/Views/Employee'
 import GasType from 'src/components/Dashboard/Views/GasType'
 import VehicleBrand from 'src/components/Dashboard/Views/VehicleBrand'
 import VehicleModel from 'src/components/Dashboard/Views/VehicleModel'
+import Rent from 'src/components/Dashboard/Views/Rent'
+import Inspection from 'src/components/Dashboard/Views/Inspection'
 
 const routes = [
   {
@@ -75,7 +77,9 @@ const routes = [
       Employee,
       GasType,
       VehicleBrand,
-      VehicleModel
+      VehicleModel,
+      Rent,
+      Inspection
     ]
   },
   {
