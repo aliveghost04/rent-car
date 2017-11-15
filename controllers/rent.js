@@ -13,13 +13,17 @@ module.exports = (route, app, models) => {
 			.findById(req.params.id)
 			.exec()
 			.then(rent => {
-				const daysDelay = moment().diff(rent.returnDate, 'd');
+				if (rent) {
+					const daysDelay = moment().diff(rent.returnDate, 'd');
 
-				res.json({
-					costPerDay: rent.costPerDay,
-					daysDelay,
-					daysDelayAmount: daysDelay > 0 ? daysDelay * rent.costPerDay : 0
-				});
+					res.json({
+						costPerDay: rent.costPerDay,
+						daysDelay,
+						daysDelayAmount: daysDelay > 0 ? daysDelay * rent.costPerDay : 0
+					});
+				} else {
+					return Promise.reject(new rentError('not_found'));
+				}
 			})
 			.catch(next)
 	});
@@ -51,13 +55,14 @@ module.exports = (route, app, models) => {
 				
 				return VehicleInspection.findOne({
 					_id: hook.data.inspection
+				}, {
+					vehicle: 1
 				}).exec().then(vehicleInspection => {
 					if (!vehicleInspection) {
 						return Promise.reject(new rentError('invalid_inspection'));
 					}
 
 					hook.data.vehicle = vehicleInspection.vehicle;
-					hook.data.customer = vehicleInspection.customer;
 					delete hook.data.inspection;
 
 					return hook;
@@ -67,7 +72,36 @@ module.exports = (route, app, models) => {
 				return Promise.reject(new rentError('method_not_allowed'));
 			},
 			patch: function (hook) {
-				return Promise.reject(new rentError('method_not_allowed'));
+				const data = {
+					gasAmount: hook.data.gasAmount,
+					damageAmount: hook.data.damageAmount,
+					surcharge: hook.data.surcharge
+				};
+
+				const query = {
+					_id: models.Types.ObjectId(hook.id),
+					'$or': [{
+						status: 'active'
+					}, {
+						status: 'checking'
+					}]
+				};
+
+				return Rent
+					.findOne(query)
+					.exec()
+					.then(rent => {
+						if (rent) {
+							Object.assign(rent, data);
+							return rent.save();
+						} else {
+							return Promise
+								.reject(new rentError('not_found_or_validated'))
+						}
+					})
+					.then(rent => {
+						hook.result = rent.toObject();
+					});
 			},
 			update: function (hook) {
 				return Promise.reject(new rentError('method_not_allowed'));

@@ -76,7 +76,8 @@
             'customer',
             'vehicle',
             'rentDate',
-            'returnDate'
+            'returnDate',
+            'status'
           ]
         }, true)
         .then(rents => {

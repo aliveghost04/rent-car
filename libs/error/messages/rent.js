@@ -28,5 +28,13 @@ module.exports = {
 	METHOD_NOT_ALLOWED: {
 		message: 'Las rentas no pueden actualizarse ni eliminarse',
 		status: 405
+	},
+	NOT_FOUND: {
+		message: 'Renta no encontrada',
+		status: 400
+	},
+	NOT_FOUND_OR_VALIDATED: {
+		message: 'La renta no fue encontrada o ya ha sido validada',
+		status: 409
 	}
 };

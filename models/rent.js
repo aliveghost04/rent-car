@@ -11,6 +11,11 @@ module.exports = models => {
 			type: {},
 			required: true
 		},
+		inspection: {
+			type: Schema.Types.ObjectId,
+			ref: 'VehicleInspection',
+			required: true
+		},
 		vehicle: {
 			type: {},
 			required: true
@@ -48,6 +53,30 @@ module.exports = models => {
 				return this.status === 'completed';
 			}
 		},
+		gasAmount: {
+			type: Number,
+			required: function () {
+				return this.status === 'completed';
+			}
+		},
+		damageAmount: {
+			type: Number,
+			required: function () {
+				return this.status === 'completed';
+			}
+		},
+		surcharge: {
+			type: Number,
+			required: function () {
+				return this.status === 'completed';
+			}
+		},
+		total: {
+			type: Number,
+			required: function () {
+				return this.status === 'completed';
+			}
+		},
 		comment: String,
 		status: {
 			type: String,
@@ -60,6 +89,10 @@ module.exports = models => {
 
 	RentSchema.pre('validate', function (next) {
 		let promise = Promise.resolve();
+		const Vehicle = this.model('Vehicle');
+		const VehicleInspection = this.model('VehicleInspection');
+		const User = this.model('User');
+		const Customer = this.model('Customer');
 
 		if (this.isNew) {
 			this.rentDate = moment({
@@ -68,7 +101,11 @@ module.exports = models => {
 				seconds: 0, 
 				millisecond: 0
 			}).toDate();
-			this.daysQuantity = moment(this.rentDate).diff(this.returnDate, 'days');
+			this.daysQuantity = Math
+				.ceil(
+					moment(this.returnDate)
+						.diff(this.rentDate, 'days', true)
+				);
 
 			// Populate fields
 			promise = Vehicle
@@ -76,7 +113,7 @@ module.exports = models => {
 				.exec()
 				.then(vehicle => {
 					if (vehicle) {
-						this.vehicle = vehicle;
+						this.vehicle = vehicle.toObject();
 						return User
 							.findById(this.employee)
 							.exec();
@@ -87,7 +124,7 @@ module.exports = models => {
 				})
 				.then(user => {
 					if (user) {
-						this.user = user;
+						this.user = user.toObject();
 						return Customer
 							.findById(this.customer)
 							.exec()
@@ -98,10 +135,41 @@ module.exports = models => {
 				})
 				.then(customer => {
 					if (customer) {
-						this.customer = customer;
+						this.customer = customer.toObject();
 					} else {
 						return Promise
 							.reject(new rentError('invalid_customer'));
+					}
+				});
+		} else {
+			this.daysQuantityTaken = Math
+				.ceil(
+					moment(this.returnedDate)
+						.diff(this.rentDate, 'd', true)
+				);
+
+			this.total = (this.daysQuantityTaken * this.costPerDay) +
+				this.surcharge +
+				this.gasAmount +
+				this.damageAmount;
+
+			this.status = 'completed';
+			this.returnedDate = Date.now();
+			
+			promise = VehicleInspection
+				.findOne({
+					rent: this._id,
+					type: 'return'
+				}, {
+					_id: 1
+				})
+				.exec()
+				.then(inspection => {
+					if (inspection) {
+						this.inspection = inspection._id;
+					} else {
+						return Promise
+							.reject(new rentError('invalid_inspection'));
 					}
 				})
 		}
@@ -119,12 +187,23 @@ module.exports = models => {
 	});
 
 	RentSchema.post('save', function (doc, next) {
+		let promise = Promise.resolve();
 		const Vehicle = this.model('Vehicle');
-		const Customer = this.model('Customer');
-		const User = this.model('User');
-
-		Vehicle
-			.markAsRented(doc.vehicle)
+		const VehicleInspection = this.model('VehicleInspection');
+		
+		if (doc.status === 'active') {
+			promise = Vehicle
+				.markAsRented(doc.vehicle._id)
+				.then(() => {
+					return VehicleInspection
+						.setRent(doc.inspection, doc._id);
+				});
+		} else if (doc.status === 'completed') {
+			promise = Vehicle
+				.markAsActive(doc.vehicle._id);
+		}
+			
+		promise
 			.then(() => {
 				next();
 			})

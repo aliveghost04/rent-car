@@ -5,7 +5,7 @@
       <div class="col-md-6 col-md-offset-3">
         <div class="alert alert-warning" v-if="rent.daysDelay > 0">
           Este vehículo tiene <strong>{{ rent.daysDelay}}</strong> 
-          de atraso. 
+          días de atraso. 
           <strong>Será cobrado un monto de recargo</strong>
         </div>
         <fg-input type="number"
@@ -96,6 +96,28 @@
           Number(this.rent.gasAmount) +
           Number(this.rent.damageAmount) ||
           0
+      }
+    },
+    methods: {
+      save: function () {
+        RentService
+          .patch(
+            this.$route.params.id,
+            this.rent
+          )
+          .then(rent => {
+            this.$notifications.notify({
+              message: 'Vehiculo retornado exitosamente',
+              icon: 'ti-check',
+              verticalAlign: 'bottom',
+              horizontalAlign: 'right',
+              type: 'success'
+            })
+            this.$router.push({
+              name: 'rent-list'
+            })
+          })
+          .catch(console.error)
       }
     }
   }

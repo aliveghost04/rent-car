@@ -49,5 +49,10 @@ export default {
     return http
       .delete(`${path}/${id}`)
       .then(res => res.data)
+  },
+  patch: (id, data) => {
+    return http
+      .patch(`${path}/${id}`, data)
+      .then(res => res.data)
   }
 }

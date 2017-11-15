@@ -84,5 +84,19 @@ module.exports = models => {
 		})
 	};
 
+	VehicleSchema.statics.markAsActive = function (_id) {
+		return this.update({
+			_id
+		}, {
+			status: 'active'
+		}).then(res => {
+			if (res.ok) {
+				return Promise.resolve(true);
+			} else {
+				return Promise.reject(new serverError('error'));
+			}
+		})
+	};
+
 	return models.model(modelName, VehicleSchema); 
 };
