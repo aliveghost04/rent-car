@@ -9,11 +9,6 @@ const SidebarStore = {
       path: '/'
     },
     {
-      name: 'Vehículos',
-      icon: 'ti-car',
-      path: '/vehicle'
-    },
-    {
       name: 'Clientes',
       icon: 'ti-user',
       path: '/customer'
@@ -22,6 +17,16 @@ const SidebarStore = {
       name: 'Empleados',
       icon: 'ti-archive',
       path: '/employee'
+    },
+    {
+      name: 'Vehículos',
+      icon: 'ti-car',
+      path: '/vehicle'
+    },
+    {
+      name: 'Tipos de vehículos',
+      icon: 'ti-image',
+      path: '/vehicle-type'
     },
     {
       name: 'Marca de vehículos',
@@ -34,6 +39,11 @@ const SidebarStore = {
       path: '/vehicle-model'
     },
     {
+      name: 'Tipos de combustible',
+      icon: 'ti-paint-bucket',
+      path: '/gas-type'
+    },
+    {
       name: 'Rentas',
       icon: 'ti-money',
       path: '/rent'
@@ -42,17 +52,12 @@ const SidebarStore = {
       name: 'Inspección',
       icon: 'ti-eye',
       path: '/inspection'
-    },
+    }
     // {
     //   name: 'Typography',
     //   icon: 'ti-text',
     //   path: '/typography'
     // },
-    {
-      name: 'Tipos de combustible',
-      icon: 'ti-paint-bucket',
-      path: '/gas-type'
-    }
     // ,
     // {
     //   name: 'Icons',

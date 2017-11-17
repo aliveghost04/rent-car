@@ -4,7 +4,7 @@
     <div class="col-md-12">
       <div class="text-right add-button">
         <router-link 
-          :to="{ name: 'gas-type-add' }" 
+          :to="{ name: 'vehicle-type-add' }" 
           class="btn btn-primary">
 
           Agregar
@@ -13,7 +13,7 @@
       <div class="card">
         <div class="header">
           <slot name="header">
-            <h4 class="title">Listado de tipos de combustibles</h4>
+            <h4 class="title">Listado de tipos de vehículos</h4>
           </slot>
         </div>
         <div class="content table-responsive table-full-width">
@@ -24,30 +24,30 @@
               <th>Acciones</th>
             </thead>
             <tbody>
-              <tr v-for="gasType in gasTypes" :key="gasType._id">
-                <td>{{ gasType.description }}</td>
+              <tr v-for="type in types" :key="type._id">
+                <td>{{ type.description }}</td>
                 <td>
                   <i class="ti-check text-success" 
-                    v-if="gasType.active"
+                    v-if="type.active"
                     title="Activo">
                   </i>
                   <i class="ti-close text-warning" 
-                    v-if="!gasType.active"
+                    v-if="!type.active"
                     title="Inactivo">
                   </i>
                 </td>
                 <td>
                   <router-link :to="{
-                    name: 'gas-type-edit',
+                    name: 'vehicle-type-edit',
                     params: {
-                      id: gasType._id
+                      id: type._id
                     }
                   }" class="btn btn-warning">
                     <i class="ti-pencil"></i>
                   </router-link>
                   <button type="button"
                     class="btn btn-danger" 
-                    @click.prevent="remove(gasType._id)">
+                    @click.prevent="remove(type._id)">
                     <i class="ti-trash"></i>
                   </button>
                 </td>
@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
   import Loading from 'src/components/UIComponents/Loading'
-  import GasTypeService from 'src/services/gas-type'
+  import VehicleTypeService from 'src/services/vehicle-type'
 
   export default {
     components: {
@@ -71,7 +71,7 @@
     data: function () {
       return {
         loading: true,
-        gasTypes: []
+        types: []
       }
     },
     methods: {
@@ -79,35 +79,35 @@
         this.$swal({
           title: 'Confirmar',
           icon: 'warning',
-          text: '¿Estás seguro que quieres eliminar este combustible?',
+          text: '¿Estás seguro que quieres eliminar esta marca de vehículo?',
           dangerMode: true,
           buttons: true
         }).then(deleteIt => {
           if (deleteIt) {
-            GasTypeService
+            VehicleTypeService
               .delete(id)
               .then(res => {
                 this.$notifications.notify({
-                  message: 'El combustible ha sido eliminado exitosamente',
+                  message: 'La marca de vehículo ha sido eliminado exitosamente',
                   type: 'success',
                   icon: 'ti-check',
                   horizontalAlign: 'right',
                   verticalAlign: 'bottom'
                 })
 
-                this.gasTypes = this
-                  .gasTypes
-                  .filter(gasType => gasType._id !== id)
+                this.types = this
+                  .types
+                  .filter(type => type._id !== id)
               }).catch(console.error)
           }
         })
       }
     },
     mounted: function () {
-      GasTypeService
+      VehicleTypeService
         .getAll()
-        .then(gasTypes => {
-          this.gasTypes = gasTypes
+        .then(types => {
+          this.types = types
         })
         .catch(console.error)
         .then(() => {

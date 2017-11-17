@@ -38,12 +38,14 @@
                 <td>{{ vehicle.type }}</td>
                 <td>{{ vehicle.statusText }}</td>
                 <td>
-                  <router-link v-if="vehicle.status !== 'rented'" :to="{
-                    name: 'inspection-add',
-                    params: {
-                      id: vehicle.id
-                    }
-                  }" class="btn btn-success">
+                  <router-link v-if="vehicle.status === 'active'" 
+                    :to="{
+                      name: 'inspection-add',
+                      params: {
+                        id: vehicle.id
+                      }
+                    }" class="btn btn-success">
+                    
                     Rentar
                   </router-link>
                   <router-link :to="{

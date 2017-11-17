@@ -91,10 +91,12 @@
     },
     computed: {
       total: function () {
-        return Number(this.rent.delayAmount) +
+        return (
+          Number(this.rent.delayAmount) +
           Number(this.rent.surcharge) +
           Number(this.rent.gasAmount) +
-          Number(this.rent.damageAmount) ||
+          Number(this.rent.damageAmount)
+          ).toFixed(2) ||
           0
       }
     },

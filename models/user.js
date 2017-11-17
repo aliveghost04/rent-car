@@ -75,8 +75,7 @@ module.exports = models => {
 			}]
 		}).exec().then(user => {
 			if (user) {
-				const hashedPass = user.hashPassword(password);
-				if (hashedPass === user.password) {
+				if (user.hashPassword(password) === user.password) {
 					return user;
 				} else {
 					return Promise.reject(new userError('NOT_FOUND'));
@@ -87,13 +86,29 @@ module.exports = models => {
 		});
 	};
 
-	UserSchema.methods.hashPassword = function(password) {
+	UserSchema.methods.hashPassword = function (password) {
 		return require('crypto')
 			.createHash('sha512')
 			.update(this._id.toString())
 			.update(password)
 			.digest('hex');
 	};
+
+	UserSchema.pre('findOneAndUpdate', function () {
+		console.log('update', this);
+		process.exit();
+	})
+
+	UserSchema.pre('save', function (next) {
+		if (this.isNew) {
+			console.log(this.isNew, 'is new');
+			process.exit();
+			this.password = this.hashPassword(this.password);
+		} else if (this.isModified('password')) {
+			console.log('here', this.hashPassword);
+			process.exit();
+		}
+	});
 
 	return models.model(modelName, UserSchema);
 };

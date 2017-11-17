@@ -1,30 +1,30 @@
 import List from './List'
 import Add from './Add'
-import Edit from './Edit'
 import Base from './Base'
+import Edit from './Edit'
 
 const routes = {
-  path: 'vehicle',
+  path: 'vehicle-type',
   component: Base,
   children: [{
     path: '',
-    name: 'vehicle-list',
+    name: 'vehicle-type-list',
     meta: {
-      title: 'Vehículos'
+      title: 'Tipos de vehículos'
     },
     component: List
   }, {
     path: 'add',
-    name: 'vehicle-add',
+    name: 'vehicle-type-add',
     meta: {
-      title: 'Agregar vehículo'
+      title: 'Agregar tipo de vehículo'
     },
     component: Add
   }, {
     path: ':id/edit',
-    name: 'vehicle-edit',
+    name: 'vehicle-type-edit',
     meta: {
-      title: 'Editar vehículo'
+      title: 'Editar tipo de vehículo'
     },
     component: Edit
   }]

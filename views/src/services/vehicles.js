@@ -42,6 +42,31 @@ export default {
       })
       .then(res => res.data)
   },
+  update: data => {
+    let savedStatus = data.status
+
+    if (data.active) {
+      data.status = 'active'
+      delete data.active
+    } else if (data.active === false) {
+      data.status = 'inactive'
+      delete data.active
+    }
+    return http
+      .put(`${path}/${data._id}`, data)
+      .then(res => res.data)
+      .catch(err => {
+        if (data.status === 'active') {
+          data.active = true
+          data.status = savedStatus
+        } else if (data.status === 'inactive') {
+          data.active = false
+          data.status = savedStatus
+        }
+
+        return Promise.reject(err)
+      })
+  },
   delete: id => {
     return http
       .delete(`${path}/${id}`)

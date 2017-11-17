@@ -36,8 +36,8 @@
         </div>
         <fg-input type="number"
           v-model="employee.comission"
-          label="Comisión"
-          title="Comisión">
+          label="Comisión (%)"
+          title="Comisión (%)">
         </fg-input>
         <div class="form-group">
           <label>Tipo de usuario</label>

@@ -29,7 +29,7 @@
             <tbody>
               <tr v-for="employee in employees" :key="employee.id">
                 <td>{{ employee.name }}</td>
-                <td>{{ employee.cedula }}</td>
+                <td>{{ employee.cedula | formatCedula }}</td>
                 <td>{{ employee.email }}</td>
                 <td>{{ employee.journeyText }}</td>
                 <td>
@@ -123,6 +123,14 @@
         .then(() => {
           this.loading = false
         })
+    },
+    filters: {
+      formatCedula: function (value) {
+        let cedula = value.split('')
+        cedula.splice(3, 0, '-')
+        cedula.splice(-1, 0, '-')
+        return cedula.join('')
+      }
     }
   }
 </script>

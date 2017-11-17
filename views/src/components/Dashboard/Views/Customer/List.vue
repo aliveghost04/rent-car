@@ -29,8 +29,8 @@
             <tbody>
               <tr v-for="customer in customers" :key="customer.id">
                 <td>{{ customer.name }}</td>
-                <td>{{ customer.cedula }}</td>
-                <td>{{ customer.creditLimit }}</td>
+                <td>{{ customer.cedula | formatCedula }}</td>
+                <td>RD$ {{ customer.creditLimit }}</td>
                 <td>{{ customer.type }}</td>
                 <td>
                   <i class="ti-check text-success" 
@@ -119,6 +119,14 @@
         .then(() => {
           this.loading = false
         })
+    },
+    filters: {
+      formatCedula: function (value) {
+        let cedula = value.split('')
+        cedula.splice(3, 0, '-')
+        cedula.splice(-1, 0, '-')
+        return cedula.join('')
+      }
     }
   }
 </script>
