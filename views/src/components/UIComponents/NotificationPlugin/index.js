@@ -1,4 +1,5 @@
 import Notifications from './Notifications.vue'
+import shortid from 'shortid'
 
 const NotificationStore = {
   state: [], // here the notifications will be added
@@ -7,6 +8,7 @@ const NotificationStore = {
     this.state.splice(index, 1)
   },
   notify (notification) {
+    notification.id = shortid.generate()
     this.state.push(notification)
   }
 }

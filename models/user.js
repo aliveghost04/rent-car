@@ -1,6 +1,7 @@
 'use strict';
 const modelName = 'User';
 const userError = require('../libs/error')('user');
+const cedulaValidator = require('../libs/cedula-validator');
 
 module.exports = models => {
 
@@ -13,7 +14,13 @@ module.exports = models => {
 		},
 		cedula: {
 			type: String,
-			required: true
+			required: true,
+			validate: {
+				validator: function (v) {
+					return cedulaValidator.validate(v)
+				},
+				message: 'Invalid cedula'
+			}
 		},
 		email: {
 			type: String,
@@ -94,20 +101,13 @@ module.exports = models => {
 			.digest('hex');
 	};
 
-	UserSchema.pre('findOneAndUpdate', function () {
-		console.log('update', this);
-		process.exit();
-	})
-
 	UserSchema.pre('save', function (next) {
-		if (this.isNew) {
-			console.log(this.isNew, 'is new');
-			process.exit();
+		// Hash Password for new users or when password field is modified
+		if (this.isNew || this.isModified('password')) {
 			this.password = this.hashPassword(this.password);
-		} else if (this.isModified('password')) {
-			console.log('here', this.hashPassword);
-			process.exit();
 		}
+		
+		next();
 	});
 
 	return models.model(modelName, UserSchema);

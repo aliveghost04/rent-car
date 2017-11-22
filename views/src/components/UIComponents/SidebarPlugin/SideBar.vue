@@ -133,4 +133,8 @@
     margin-right: 15px;
     line-height: 30px;
   }
+
+  .nav > li > a {
+    /*padding: 5px 15px !important;*/
+  }
 </style>

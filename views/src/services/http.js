@@ -25,6 +25,12 @@ http.interceptors.response.use(function (config) {
 
   if (!message) {
     message = 'Ha ocurrido un error, por favor intente más tarde'
+  } else if (Array.isArray(message)) {
+    console.log(message)
+    message = message.reduce((b, a) => {
+      console.log(b)
+      return `${b}<br/> ${a}`
+    })
   }
 
   vm.$notifications.notify({

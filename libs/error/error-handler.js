@@ -12,6 +12,16 @@ module.exports = app => {
 			console.error(err);
 		}
 
+    if (err.errors) {
+      let error = new serverError('validation');
+      error.message = [];
+      Object.keys(err.errors).forEach(key => {
+        error.message.push(err.errors[key].message);
+      });
+
+      err = error;
+    }
+
 		res.status(err.status).json(err);
 	});
 }

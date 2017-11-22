@@ -1,5 +1,6 @@
 'use strict';
 const modelName = 'Customer';
+const cedulaValidator = require('../libs/cedula-validator');
 
 module.exports = models => {
 	const Schema = models.Schema;
@@ -11,7 +12,13 @@ module.exports = models => {
 		},
 		cedula: {
 			type: String,
-			required: true
+			required: true,
+			validate: {
+				validator: function (v) {
+					return cedulaValidator.validate(v);
+				},
+				message: 'Invalid cedula'
+			}
 		},
 		email: String,
 		creditCard: {
