@@ -1,6 +1,7 @@
 'use strict';
 const feathers = require('feathers');
 const service = require('feathers-mongoose');
+const parseSearch = require('../libs/parse-search')
 
 module.exports = (route, app, models) => {
 	const Customer = models.model('Customer');
@@ -11,4 +12,10 @@ module.exports = (route, app, models) => {
 			max: 100
 		}
 	}));
+
+  app.service(route).hooks({
+    before: {
+      find: parseSearch
+    }
+  });
 };

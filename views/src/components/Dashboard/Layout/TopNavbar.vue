@@ -51,7 +51,8 @@
     },
     data () {
       return {
-        activeNotifications: false
+        activeNotifications: false,
+        search: {}
       }
     },
     methods: {
