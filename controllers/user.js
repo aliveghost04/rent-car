@@ -2,6 +2,7 @@
 const feathers = require('feathers');
 const service = require('feathers-mongoose');
 const userError = require('../libs/error')('user');
+const parseSearch = require('../libs/parse-search');
 
 module.exports = (route, app, models) => {
   const User = models.model('User');
@@ -15,6 +16,7 @@ module.exports = (route, app, models) => {
 
   app.service(route).hooks({
     before: {
+      find: parseSearch,
       update: function (hook) {
         return User
           .findById(hook.id)

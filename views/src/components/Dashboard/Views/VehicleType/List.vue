@@ -2,15 +2,16 @@
   <div class="row">
     <loading :isLoading="loading"/>
     <div class="col-md-12">
-      <div class="text-right add-button">
+      <div>
+        <search :options="searchOptions" @search="search"/>
         <router-link 
           :to="{ name: 'vehicle-type-add' }" 
-          class="btn btn-primary">
+          class="btn btn-primary add-button">
 
           Agregar
         </router-link>
       </div>
-      <div class="card">
+      <div class="card" v-if="types.length > 0">
         <div class="header">
           <slot name="header">
             <h4 class="title">Listado de tipos de vehículos</h4>
@@ -56,22 +57,31 @@
           </table>
         </div>
       </div>
+      <div class="alert alert-info" v-else>
+        No hay tipos de vehículos a mostrar
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
   import Loading from 'src/components/UIComponents/Loading'
+  import Search from 'src/components/UIComponents/Search'
   import VehicleTypeService from 'src/services/vehicle-type'
 
   export default {
     components: {
-      Loading
+      Loading,
+      Search
     },
     data: function () {
       return {
         loading: true,
-        types: []
+        types: [],
+        searchOptions: [{
+          label: 'Nombre',
+          value: 'description'
+        }]
       }
     },
     methods: {
@@ -101,6 +111,22 @@
               }).catch(console.error)
           }
         })
+      },
+      search: function (searchTerm) {
+        this.loading = true
+
+        VehicleTypeService
+          .getAll({
+            q: searchTerm.text,
+            field: searchTerm.type
+          })
+          .then(types => {
+            this.types = types
+          })
+          .catch(console.error)
+          .then(() => {
+            this.loading = false
+          })
       }
     },
     mounted: function () {

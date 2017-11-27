@@ -2,15 +2,16 @@
   <div class="row">
     <loading :isLoading="loading"/>
     <div class="col-md-12">
-      <div class="text-right add-button">
+      <div>
+        <search :options="searchOptions" @search="search"/>
         <router-link 
           :to="{ name: 'employee-add' }" 
-          class="btn btn-primary">
+          class="btn btn-primary add-button">
 
           Agregar
         </router-link>
       </div>
-      <div class="card">
+      <div class="card" v-if="employees.length > 0">
         <div class="header">
           <slot name="header">
             <h4 class="title">Listado de empleados</h4>
@@ -66,22 +67,37 @@
           </table>
         </div>
       </div>
+      <div class="alert alert-info" v-if="employees.length === 0">
+        No hay empleados para mostrar
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
   import Loading from 'src/components/UIComponents/Loading'
+  import Search from 'src/components/UIComponents/Search'
   import UserService from 'src/services/user'
 
   export default {
     components: {
-      Loading
+      Loading,
+      Search
     },
     data: function () {
       return {
         loading: true,
-        employees: []
+        employees: [],
+        searchOptions: [{
+          label: 'Email',
+          value: 'email'
+        }, {
+          label: 'Nombre',
+          value: 'name'
+        }, {
+          label: 'Cédula',
+          value: 'cedula'
+        }]
       }
     },
     methods: {
@@ -111,6 +127,22 @@
               }).catch(console.error)
           }
         })
+      },
+      search: function (searchTerm) {
+        this.loading = true
+
+        UserService
+          .getAll({
+            q: searchTerm.text,
+            field: searchTerm.type
+          }, true)
+          .then(employees => {
+            this.employees = employees
+          })
+          .catch(console.error)
+          .then(() => {
+            this.loading = false
+          })
       }
     },
     mounted: function () {

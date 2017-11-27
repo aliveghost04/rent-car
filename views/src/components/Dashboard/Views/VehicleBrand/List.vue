@@ -2,15 +2,16 @@
   <div class="row">
     <loading :isLoading="loading"/>
     <div class="col-md-12">
-      <div class="text-right add-button">
+      <div>
+        <search :options="searchOptions" @search="search"/>
         <router-link 
           :to="{ name: 'vehicle-brand-add' }" 
-          class="btn btn-primary">
+          class="btn btn-primary add-button">
 
           Agregar
         </router-link>
       </div>
-      <div class="card">
+      <div class="card" v-if="brands.length > 0">
         <div class="header">
           <slot name="header">
             <h4 class="title">Listado de marca de vehículos</h4>
@@ -56,22 +57,31 @@
           </table>
         </div>
       </div>
+      <div class="alert alert-info" v-else>
+        No hay marca de vehículos a mostrar
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
   import Loading from 'src/components/UIComponents/Loading'
+  import Search from 'src/components/UIComponents/Search'
   import VehicleBrandService from 'src/services/vehicle-brand'
 
   export default {
     components: {
-      Loading
+      Loading,
+      Search
     },
     data: function () {
       return {
         loading: true,
-        brands: []
+        brands: [],
+        searchOptions: [{
+          label: 'Nombre',
+          value: 'description'
+        }]
       }
     },
     methods: {
@@ -101,6 +111,22 @@
               }).catch(console.error)
           }
         })
+      },
+      search: function (searchTerm) {
+        this.loading = true
+
+        VehicleBrandService
+          .getAll({
+            q: searchTerm.text,
+            field: searchTerm.type
+          })
+          .then(brands => {
+            this.brands = brands
+          })
+          .catch(console.error)
+          .then(() => {
+            this.loading = false
+          })
       }
     },
     mounted: function () {

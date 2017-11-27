@@ -24,6 +24,19 @@ Vue.use(vClickOutside)
 Vue.use(Notifications)
 Vue.use(SideBar)
 
+Object.defineProperty(Vue.prototype, '$notify', {
+  get () {
+    return function (message, type = 'danger', extraConfig) {
+      this.$notifications.notify(Object.assign({
+        message,
+        type,
+        verticalAlign: 'bottom',
+        horizontalAlign: 'right'
+      }, extraConfig))
+    }
+  }
+})
+
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
   get () {

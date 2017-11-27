@@ -2,6 +2,7 @@
 const feathers = require('feathers');
 const service = require('feathers-mongoose');
 const vehicleError = require('../libs/error')('vehicle');
+const parseSearch = require('../libs/parse-search');
 
 module.exports = (route, app, models) => {
 	const Vehicle = models.model('Vehicle');
@@ -62,6 +63,9 @@ module.exports = (route, app, models) => {
 		before: {
 			create(hook) {
 				return populateFields(hook);
+			},
+			find: function (hook) {
+				parseSearch(hook);
 			}
 		}
 	});

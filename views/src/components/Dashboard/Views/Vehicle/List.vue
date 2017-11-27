@@ -2,15 +2,16 @@
   <div class="row">
     <loading :isLoading="loading"/>
     <div class="col-md-12">
-      <div class="text-right add-button">
+      <div>
+        <search :options="searchOptions" @search="search" />
         <router-link 
           :to="{ name: 'vehicle-add' }" 
-          class="btn btn-primary">
+          class="btn btn-primary add-button">
 
           Agregar
         </router-link>
       </div>
-      <div class="card">
+      <div class="card" v-if="vehicles.length > 0">
         <div class="header">
           <slot name="header">
             <h4 class="title">Listado de Vehículos</h4>
@@ -67,6 +68,9 @@
           </table>
         </div>
       </div>
+      <div class="alert alert-info" v-if="vehicles.length === 0">
+        No hay vehículos para mostrar
+      </div>
     </div>
   </div>
 </template>
@@ -74,17 +78,29 @@
 <script>
   import Loading from 'src/components/UIComponents/Loading'
   import PaperTable from 'src/components/UIComponents/PaperTable'
+  import Search from 'src/components/UIComponents/Search'
   import VehicleService from 'src/services/vehicles'
 
   export default {
     components: {
       Loading,
-      PaperTable
+      PaperTable,
+      Search
     },
     data: function () {
       return {
         loading: true,
-        vehicles: null
+        vehicles: [],
+        searchOptions: [{
+          label: 'Número de chasis',
+          value: 'chasisNumber'
+        }, {
+          label: 'Número de motor',
+          value: 'engineNumber'
+        }, {
+          label: 'Número de placa',
+          value: 'plateNumber'
+        }]
       }
     },
     mounted: function () {
@@ -125,6 +141,22 @@
               }).catch(console.error)
           }
         })
+      },
+      search: function (searchTerm) {
+        this.loading = true
+
+        VehicleService
+          .getAll({
+            q: searchTerm.text,
+            field: searchTerm.type
+          }, true)
+          .then(vehicles => {
+            this.vehicles = vehicles
+          })
+          .catch(console.error)
+          .then(() => {
+            this.loading = false
+          })
       }
     }
   }

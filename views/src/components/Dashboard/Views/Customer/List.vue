@@ -125,6 +125,8 @@
         })
       },
       search: function (search) {
+        this.loading = true
+
         CustomerService
           .getAll({
             q: search.text,
@@ -134,6 +136,9 @@
             this.customers = customers
           })
           .catch(console.error)
+          .then(() => {
+            this.loading = false
+          })
       }
     },
     mounted: function () {
