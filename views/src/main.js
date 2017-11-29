@@ -6,6 +6,7 @@ import GlobalComponents from './gloablComponents'
 import Notifications from './components/UIComponents/NotificationPlugin'
 import SideBar from './components/UIComponents/SidebarPlugin'
 import App from './App'
+import jspdf from 'jspdf'
 
 // router setup
 import routes from './routes/routes'
@@ -24,6 +25,7 @@ Vue.use(vClickOutside)
 Vue.use(Notifications)
 Vue.use(SideBar)
 
+// global library setup
 Object.defineProperty(Vue.prototype, '$notify', {
   get () {
     return function (message, type = 'danger', extraConfig) {
@@ -37,7 +39,6 @@ Object.defineProperty(Vue.prototype, '$notify', {
   }
 })
 
-// global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
   get () {
     return this.$root.Chartist
@@ -53,6 +54,12 @@ Object.defineProperty(Vue.prototype, '$swal', {
 Object.defineProperty(Vue.prototype, '$moment', {
   get () {
     return moment
+  }
+})
+
+Object.defineProperty(Vue.prototype, '$jspdf', {
+  get () {
+    return jspdf
   }
 })
 

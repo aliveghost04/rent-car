@@ -36,7 +36,7 @@
         </chart-card>
       </div>
 
-      <div class="col-md-6 col-xs-12">
+      <!-- <div class="col-md-6 col-xs-12">
         <chart-card :chart-data="preferencesChart.data"  chart-type="Pie">
           <h4 class="title" slot="title">Email Statistics</h4>
           <span slot="subTitle"> Last campaign performance</span>
@@ -48,9 +48,9 @@
             <i class="fa fa-circle text-warning"></i> Unsubscribe
           </div>
         </chart-card>
-      </div>
+      </div> -->
 
-      <div class="col-md-6 col-xs-12">
+      <!-- <div class="col-md-6 col-xs-12">
         <chart-card :chart-data="activityChart.data" :chart-options="activityChart.options">
           <h4 class="title" slot="title">2015 Sales</h4>
           <span slot="subTitle"> All products including Taxes</span>
@@ -61,7 +61,7 @@
             <i class="fa fa-circle text-warning"></i> BMW 5 Series
           </div>
         </chart-card>
-      </div>
+      </div> -->
 
     </div>
 
@@ -82,36 +82,20 @@
       return {
         statsCards: [
           {
-            type: 'warning',
-            icon: 'ti-server',
-            title: 'Capacity',
-            value: '105GB',
-            footerText: 'Updated now',
-            footerIcon: 'ti-reload'
-          },
-          {
             type: 'success',
             icon: 'ti-wallet',
-            title: 'Revenue',
+            title: 'Ganancias',
             value: '$1,345',
-            footerText: 'Last day',
+            footerText: 'Último día',
             footerIcon: 'ti-calendar'
           },
           {
-            type: 'danger',
-            icon: 'ti-pulse',
-            title: 'Errors',
-            value: '23',
-            footerText: 'In the last hour',
-            footerIcon: 'ti-timer'
-          },
-          {
             type: 'info',
-            icon: 'ti-twitter-alt',
-            title: 'Followers',
-            value: '+45',
-            footerText: 'Updated now',
-            footerIcon: 'ti-reload'
+            icon: 'ti-pulse',
+            title: 'Rentas',
+            value: '23',
+            footerText: 'Último día',
+            footerIcon: 'ti-calendar'
           }
         ],
         usersChart: {

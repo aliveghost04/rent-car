@@ -27,6 +27,7 @@ import VehicleModel from 'src/components/Dashboard/Views/VehicleModel'
 import Rent from 'src/components/Dashboard/Views/Rent'
 import Inspection from 'src/components/Dashboard/Views/Inspection'
 import VehicleType from 'src/components/Dashboard/Views/VehicleType'
+import Report from 'src/components/Dashboard/Views/Report'
 
 const routes = [
   {
@@ -81,7 +82,8 @@ const routes = [
       VehicleModel,
       Rent,
       Inspection,
-      VehicleType
+      VehicleType,
+      Report
     ]
   },
   {

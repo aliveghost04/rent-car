@@ -52,6 +52,11 @@ const SidebarStore = {
       name: 'Inspección',
       icon: 'ti-eye',
       path: '/inspection'
+    },
+    {
+      name: 'Reportes',
+      icon: 'ti-clipboard',
+      path: '/report'
     }
     // {
     //   name: 'Typography',

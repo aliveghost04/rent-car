@@ -13,8 +13,8 @@ module.exports = models => {
 		},
 		inspection: {
 			type: Schema.Types.ObjectId,
-			ref: 'VehicleInspection',
-			required: true
+			ref: 'VehicleInspection'/*,
+			required: true*/
 		},
 		vehicle: {
 			type: {},
@@ -140,6 +140,23 @@ module.exports = models => {
 						return Promise
 							.reject(new rentError('invalid_customer'));
 					}
+				}).then(() => {
+					VehicleInspection
+						.findOne({
+							rent: this._id,
+							type: 'rent'
+						}, {
+							_id: 1
+						})
+						.exec()
+						.then(inspection => {
+							if (inspection) {
+								this.inspection = inspection._id;
+							} else {
+								return Promise
+									.reject(new rentError('invalid_inspection'));
+							}
+						});
 				});
 		} else {
 			this.daysQuantityTaken = Math
